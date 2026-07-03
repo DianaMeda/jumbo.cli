@@ -46,8 +46,8 @@ export function resolveAddedEventTypeForKind(kind: JumboMemoryKind): string {
   return addedEventTypeByKind[kind];
 }
 
-/** The event-type counts from the latest session that carries an event-log summary. */
-function latestEventCounts(records: readonly SessionRecord[]): Readonly<Record<string, number>> | undefined {
+/** Resolves the event-type counts from the latest session that carries an event-log summary. */
+function resolveLatestEventCounts(records: readonly SessionRecord[]): Readonly<Record<string, number>> | undefined {
   let latest: SessionRecord | undefined;
   for (const record of records) {
     if (!record.workspaceSnapshot?.jumboEvents) continue;
@@ -75,7 +75,7 @@ export function scoreJumboEventCapture(
   }
 
   const expectedKinds = [...new Set(expectedCaptures.map((c) => c.kind))];
-  const counts = latestEventCounts(records) ?? {};
+  const counts = resolveLatestEventCounts(records) ?? {};
 
   const present: string[] = [];
   const missing: string[] = [];
